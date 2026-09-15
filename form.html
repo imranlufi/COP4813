@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Assignment 3 form for COP4813 Web Systems I">
+    <title>Assignment 3 - Form | Imran Lufi</title>
+<link rel="stylesheet" href="form.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Assignment 3 - Form</h1>
+        <p>COP4813 - Web Systems I</p>
+    </header>
+
+    <main>
+    <h2>Contact Information Form</h2>
+    <p>Please complete the form below. All fields are required.</p>
+
+    <form id="contactForm" novalidate>
+
+        <div>
+            <label for="firstName">First Name:</label>
+            <input type="text" id="firstName" name="firstname" required>
+        </div>
+
+        <div>
+            <label for="lastName">Last Name:</label>
+            <input type="text" id="lastName" name="lastname" required>
+        </div>
+
+        <div>
+            <label for="address">Street Address:</label>
+            <input type="text" id="address" name="address" required>
+        </div>
+
+        <div>
+            <label for="city">City:</label>
+            <input type="text" id="city" name="city" required>
+        </div>
+
+        <div>
+            <label for="state">State:</label>
+            <select id="state" name="state" required>
+                <option value="">Select a state</option>
+                <option value="FL">Florida</option>
+                <option value="GA">Georgia</option>
+                <option value="AL">Alabama</option>
+                <option value="NY">New York</option>
+                <option value="CA">California</option>
+                <option value="TX">Texas</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="zip">ZIP Code:</label>
+            <input type="text" id="zip" name="zip"
+                   inputmode="numeric" maxlength="5" required>
+        </div>
+
+        <div>
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone"
+                   placeholder="(000)000-0000" required>
+        </div>
+
+        <div>
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email"
+                   placeholder="name@domain.com" required>
+        </div>
+
+        <div>
+            <label for="birthdate">Birth Date:</label>
+            <input type="date" id="birthdate" name="birthdate" required>
+        </div>
+
+        <div>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+
+        <div>
+            <label for="confirm">Security Question: What is 7 + 4?</label>
+            <input type="text" id="confirm" name="confirm"
+                   inputmode="numeric" required>
+        </div>
+
+        <div>
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </div>
+
+    </form>
+</main>
+
+<footer>
+    <p>Created by Imran Lufi</p>
+</footer>
+
+<script src="form.js"></script>
+
+</body>
+
+</html>
