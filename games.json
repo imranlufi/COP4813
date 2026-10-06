@@ -1,0 +1,39 @@
+{
+  "games": [
+    {
+      "title": "Minecraft",
+      "genre": "Sandbox",
+      "platform": "PC",
+      "releaseYear": 2011,
+      "rating": 9.0
+    },
+    {
+      "title": "Rocket League",
+      "genre": "Sports",
+      "platform": "PlayStation",
+      "releaseYear": 2015,
+      "rating": 8.5
+    },
+    {
+      "title": "Forza Horizon 5",
+      "genre": "Racing",
+      "platform": "Xbox",
+      "releaseYear": 2021,
+      "rating": 9.2
+    },
+    {
+      "title": "Super Mario Odyssey",
+      "genre": "Platformer",
+      "platform": "Nintendo Switch",
+      "releaseYear": 2017,
+      "rating": 9.5
+    },
+    {
+      "title": "Fortnite",
+      "genre": "Battle Royale",
+      "platform": "Multi-platform",
+      "releaseYear": 2017,
+      "rating": 8.0
+    }
+  ]
+}
