@@ -1,11 +1,25 @@
 {
   "games": [
     {
-      "title": "Need for Speed Underground 2",
-      "genre": "Racing",
-      "platform": "PlayStation 2",
-      "releaseYear": 2004,
-      "rating": 9.1
+      "title": "Super Mario 64",
+      "genre": "Platformer",
+      "platform": "Nintendo 64",
+      "releaseYear": 1996,
+      "rating": 9.4
+    },
+    {
+      "title": "GoldenEye 007",
+      "genre": "Shooter",
+      "platform": "Nintendo 64",
+      "releaseYear": 1997,
+      "rating": 9.0
+    },
+    {
+      "title": "Crash Bandicoot: Warped",
+      "genre": "Platformer",
+      "platform": "PlayStation",
+      "releaseYear": 1998,
+      "rating": 8.8
     },
     {
       "title": "Grand Theft Auto: San Andreas",
@@ -15,25 +29,39 @@
       "rating": 9.4
     },
     {
-      "title": "FIFA 07",
-      "genre": "Sports",
-      "platform": "PlayStation 2",
-      "releaseYear": 2006,
-      "rating": 8.4
-    },
-    {
-      "title": "Tekken 5",
-      "genre": "Fighting",
-      "platform": "PlayStation 2",
-      "releaseYear": 2005,
-      "rating": 8.8
-    },
-    {
-      "title": "Gran Turismo 4",
+      "title": "Need for Speed: Most Wanted",
       "genre": "Racing",
       "platform": "PlayStation 2",
-      "releaseYear": 2004,
+      "releaseYear": 2005,
+      "rating": 9.1
+    },
+    {
+      "title": "Call of Duty 4: Modern Warfare",
+      "genre": "Shooter",
+      "platform": "Xbox 360",
+      "releaseYear": 2007,
+      "rating": 9.2
+    },
+    {
+      "title": "Minecraft",
+      "genre": "Sandbox",
+      "platform": "PC",
+      "releaseYear": 2011,
       "rating": 9.0
+    },
+    {
+      "title": "Grand Theft Auto V",
+      "genre": "Action",
+      "platform": "PlayStation 3",
+      "releaseYear": 2013,
+      "rating": 9.5
+    },
+    {
+      "title": "Rocket League",
+      "genre": "Sports",
+      "platform": "PlayStation 4",
+      "releaseYear": 2015,
+      "rating": 8.7
     }
   ]
 }
