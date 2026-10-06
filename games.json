@@ -1,39 +1,39 @@
 {
   "games": [
     {
-      "title": "Minecraft",
-      "genre": "Sandbox",
-      "platform": "PC",
-      "releaseYear": 2011,
-      "rating": 9.0
-    },
-    {
-      "title": "Rocket League",
-      "genre": "Sports",
-      "platform": "PlayStation",
-      "releaseYear": 2015,
-      "rating": 8.5
-    },
-    {
-      "title": "Forza Horizon 5",
+      "title": "Need for Speed Underground 2",
       "genre": "Racing",
-      "platform": "Xbox",
-      "releaseYear": 2021,
-      "rating": 9.2
+      "platform": "PlayStation 2",
+      "releaseYear": 2004,
+      "rating": 9.1
     },
     {
-      "title": "Super Mario Odyssey",
-      "genre": "Platformer",
-      "platform": "Nintendo Switch",
-      "releaseYear": 2017,
-      "rating": 9.5
+      "title": "Grand Theft Auto: San Andreas",
+      "genre": "Action",
+      "platform": "PlayStation 2",
+      "releaseYear": 2004,
+      "rating": 9.4
     },
     {
-      "title": "Fortnite",
-      "genre": "Battle Royale",
-      "platform": "Multi-platform",
-      "releaseYear": 2017,
-      "rating": 8.0
+      "title": "FIFA 07",
+      "genre": "Sports",
+      "platform": "PlayStation 2",
+      "releaseYear": 2006,
+      "rating": 8.4
+    },
+    {
+      "title": "Tekken 5",
+      "genre": "Fighting",
+      "platform": "PlayStation 2",
+      "releaseYear": 2005,
+      "rating": 8.8
+    },
+    {
+      "title": "Gran Turismo 4",
+      "genre": "Racing",
+      "platform": "PlayStation 2",
+      "releaseYear": 2004,
+      "rating": 9.0
     }
   ]
 }
