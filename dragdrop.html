@@ -1,1 +1,106 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Game Loader</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #172033;
+      color: white;
+      padding: 30px;
+    }
+
+    .game-area {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 40px;
+      margin: 40px auto;
+      flex-wrap: wrap;
+    }
+
+    #cartridge {
+      padding: 25px;
+      background: #f5b841;
+      color: #222;
+      border: 3px solid white;
+      border-radius: 8px;
+      cursor: grab;
+    }
+
+    #console {
+      width: 220px;
+      height: 130px;
+      border: 3px dashed #55d6be;
+      border-radius: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #console.over {
+      background: #28564f;
+    }
+
+    #message {
+      font-size: 20px;
+      color: #55d6be;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>Retro Game Loader</h2>
+  <p>Drag the game cartridge into the console to load it!</p>
+
+  <div class="game-area">
+    <div id="cartridge" draggable="true">
+      🎮 Game Cartridge
+    </div>
+
+    <div id="console">
+      Drop Cartridge Here
+    </div>
+  </div>
+
+  <p id="message">Waiting for a game...</p>
+
+  <script>
+    const cartridge = document.getElementById("cartridge");
+    const consoleBox = document.getElementById("console");
+    const message = document.getElementById("message");
+
+    cartridge.addEventListener("dragstart", function(event) {
+      event.dataTransfer.setData("text/plain", "cartridge");
+    });
+
+    consoleBox.addEventListener("dragover", function(event) {
+      event.preventDefault();
+      consoleBox.classList.add("over");
+    });
+
+    consoleBox.addEventListener("dragleave", function() {
+      consoleBox.classList.remove("over");
+    });
+
+    consoleBox.addEventListener("drop", function(event) {
+      event.preventDefault();
+      consoleBox.classList.remove("over");
+
+      const item = event.dataTransfer.getData("text/plain");
+
+      if (item === "cartridge") {
+        consoleBox.textContent = "🎮 Game Loaded!";
+        cartridge.style.display = "none";
+        message.textContent = "Success! Your game is ready to play!";
+      }
+    });
+  </script>
+</body>
+</html>
+
