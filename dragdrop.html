@@ -5,78 +5,124 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Retro Game Loader</title>
-
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      text-align: center;
+      margin: 0;
+      min-height: 100vh;
       background: #172033;
       color: white;
-      padding: 30px;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 65px 20px;
+    }
+
+    h1 {
+      font-size: 38px;
+      color: #f5b841;
+      margin-bottom: 15px;
+    }
+
+    .instructions {
+      font-size: 18px;
+      color: #ddd;
     }
 
     .game-area {
       display: flex;
-      justify-content: center;
       align-items: center;
-      gap: 40px;
-      margin: 40px auto;
+      justify-content: center;
+      gap: 65px;
       flex-wrap: wrap;
+      margin: 65px auto 35px;
     }
 
     #cartridge {
-      padding: 25px;
-      background: #f5b841;
-      color: #222;
-      border: 3px solid white;
-      border-radius: 8px;
+      width: 160px;
       cursor: grab;
+      transition: transform 0.2s;
+    }
+
+    #cartridge:hover {
+      transform: scale(1.08);
     }
 
     #console {
-      width: 220px;
-      height: 130px;
-      border: 3px dashed #55d6be;
-      border-radius: 12px;
+      width: 260px;
+      height: 200px;
+      border: 4px dashed #55d6be;
+      border-radius: 15px;
       display: flex;
       justify-content: center;
       align-items: center;
+      padding: 20px;
+      font-size: 21px;
+      background: #202b42;
     }
 
     #console.over {
       background: #28564f;
+      border-color: #f5b841;
     }
 
     #message {
-      font-size: 20px;
       color: #55d6be;
+      font-size: 23px;
+      font-weight: bold;
+      margin-top: 35px;
+    }
+
+    #reset {
+      background: #f5b841;
+      color: #172033;
+      border: none;
+      border-radius: 8px;
+      padding: 13px 25px;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    #reset:hover {
+      background: #ffce68;
     }
   </style>
 </head>
 
 <body>
-  <h2>Retro Game Loader</h2>
-  <p>Drag the game cartridge into the console to load it!</p>
+  <h1>Retro Game Loader</h1>
+  <p class="instructions">
+    Drag the game cartridge into the console to load your game!
+  </p>
 
   <div class="game-area">
-    <div id="cartridge" draggable="true">
-      🎮 Game Cartridge
-    </div>
+
+    <img id="cartridge" draggable="true"
+      alt="Retro game cartridge"
+      src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='190' viewBox='0 0 160 190'%3E%3Crect x='10' y='10' width='140' height='170' rx='12' fill='%23bcbcbc' stroke='%23333' stroke-width='5'/%3E%3Crect x='25' y='40' width='110' height='95' rx='5' fill='%23172033'/%3E%3Crect x='33' y='48' width='94' height='50' fill='%23f5b841'/%3E%3Ctext x='80' y='79' font-family='Arial' font-size='19' font-weight='bold' text-anchor='middle' fill='%23172033'%3ERETRO%3C/text%3E%3Ctext x='80' y='119' font-family='Arial' font-size='15' text-anchor='middle' fill='white'%3EGAME%3C/text%3E%3Crect x='30' y='153' width='100' height='12' fill='%23888'/%3E%3C/svg%3E">
 
     <div id="console">
       Drop Cartridge Here
     </div>
+
   </div>
 
   <p id="message">Waiting for a game...</p>
+
+  <button id="reset" type="button">Reset Game</button>
 
   <script>
     const cartridge = document.getElementById("cartridge");
     const consoleBox = document.getElementById("console");
     const message = document.getElementById("message");
+    const reset = document.getElementById("reset");
 
     cartridge.addEventListener("dragstart", function(event) {
       event.dataTransfer.setData("text/plain", "cartridge");
+      event.dataTransfer.effectAllowed = "move";
     });
 
     consoleBox.addEventListener("dragover", function(event) {
@@ -95,12 +141,17 @@
       const item = event.dataTransfer.getData("text/plain");
 
       if (item === "cartridge") {
-        consoleBox.textContent = "🎮 Game Loaded!";
+        consoleBox.textContent = "Game Loaded!";
         cartridge.style.display = "none";
         message.textContent = "Success! Your game is ready to play!";
       }
     });
+
+    reset.addEventListener("click", function() {
+      cartridge.style.display = "block";
+      consoleBox.textContent = "Drop Cartridge Here";
+      message.textContent = "Waiting for a game...";
+    });
   </script>
 </body>
 </html>
-
