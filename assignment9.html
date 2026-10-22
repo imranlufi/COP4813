@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment 9 - Retro Space Runner</title>
+
+  <style>
+    body {
+      background: #10101c;
+      font-family: "Courier New", monospace;
+      text-align: center;
+      color: #8ef9ff;
+    }
+
+    .arcade {
+      max-width: 650px;
+      margin: 25px auto;
+    }
+
+    h2 {
+      color: #ffcc44;
+      letter-spacing: 3px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+
+    canvas {
+      background: #080c20;
+      border: 3px solid #8ef9ff;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    #status {
+      margin-top: 12px;
+      color: #ffcc44;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="arcade">
+    <h2>RETRO SPACE RUNNER</h2>
+    <p>Click the spaceship to activate turbo mode!</p>
+
+    <canvas id="gameCanvas"
+            width="600"
+            height="350"></canvas>
+
+    <div id="status">MODE: NORMAL</div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const statusText = document.getElementById("status");
+
+    let x = 100;
+    let y = 100;
+    let dx = 2;
+    let dy = 2;
+    let turbo = false;
+    let turboEnd = 0;
+
+    const stars = [];
+
+    // Create the star background
+    for (let i = 0; i < 55; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2 + 1
+      });
+    }
+
+    // Draw the spaceship
+    function drawShip() {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Engine flame
+      ctx.fillStyle = turbo ? "#ff6600" : "#ffcc44";
+      ctx.beginPath();
+      ctx.moveTo(-20, -8);
+      ctx.lineTo(turbo ? -48 : -30, 0);
+      ctx.lineTo(-20, 8);
+      ctx.fill();
+
+      // Spaceship body
+      ctx.fillStyle = turbo ? "#ff55aa" : "#44ddcc";
+      ctx.beginPath();
+      ctx.moveTo(22, 0);
+      ctx.lineTo(-16, -16);
+      ctx.lineTo(-10, 0);
+      ctx.lineTo(-16, 16);
+      ctx.closePath();
+      ctx.fill();
+
+      // Cockpit
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(-2, -4, 9, 8);
+
+      ctx.restore();
+    }
+
+    // Draw the stars
+    function drawStars() {
+      ctx.fillStyle = "#ffffff";
+
+      stars.forEach(star => {
+        ctx.fillRect(
+          star.x,
+          star.y,
+          star.size,
+          star.size
+        );
+      });
+    }
+
+    // Main animation
+    function animate(time) {
+      ctx.clearRect(
+        0, 0,
+        canvas.width,
+        canvas.height
+      );
+
+      drawStars();
+
+      // Return to normal after 2 seconds
+      if (turbo && time >= turboEnd) {
+        turbo = false;
+        dx = dx > 0 ? 2 : -2;
+        dy = dy > 0 ? 2 : -2;
+        statusText.textContent = "MODE: NORMAL";
+      }
+
+      // Move diagonally
+      x += dx;
+      y += dy;
+
+      // Bounce off the walls
+      if (x >= canvas.width - 50 || x <= 50) {
+        dx = -dx;
+      }
+
+      if (y >= canvas.height - 25 || y <= 25) {
+        dy = -dy;
+      }
+
+      drawShip();
+
+      requestAnimationFrame(animate);
+    }
+
+    // Mouse click interaction
+    canvas.addEventListener("click", function(event) {
+      const rect = canvas.getBoundingClientRect();
+
+      const mouseX =
+        (event.clientX - rect.left) *
+        canvas.width / rect.width;
+
+      const mouseY =
+        (event.clientY - rect.top) *
+        canvas.height / rect.height;
+
+      // Check if the spaceship was clicked
+      if (Math.abs(mouseX - x) < 30 &&
+          Math.abs(mouseY - y) < 25) {
+
+        turbo = true;
+        turboEnd = performance.now() + 2000;
+
+        // Activate turbo speed
+        dx = dx > 0 ? 5 : -5;
+        dy = dy > 0 ? 5 : -5;
+
+        statusText.textContent =
+          "MODE: TURBO BOOST!";
+      }
+    });
+
+    // Start animation
+    requestAnimationFrame(animate);
+  </script>
+
+</body>
+</html>
