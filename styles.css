@@ -1,4 +1,6 @@
 
+/* General Website Styling */
+
 * {
     box-sizing: border-box;
 }
@@ -6,13 +8,15 @@
 body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
-    background-color: #f4f6f8;
+    background-color: #f1f3f5;
     color: #222222;
     line-height: 1.6;
 }
 
+/* Header */
+
 header {
-    background-color: #183b5b;
+    background-color: #0079C1;
     color: #ffffff;
     text-align: center;
     padding: 45px 20px;
@@ -26,8 +30,10 @@ header p {
     margin: 0;
 }
 
+/* Navigation */
+
 nav {
-    background-color: #102a43;
+    background-color: #002F87;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -50,8 +56,10 @@ nav a {
 nav a:hover,
 nav a:focus-visible {
     background-color: #ffffff;
-    color: #102a43;
+    color: #002F87;
 }
+
+/* Main Content */
 
 main {
     width: calc(100% - 30px);
@@ -60,6 +68,7 @@ main {
     background-color: #ffffff;
     padding: 35px;
     border-radius: 8px;
+    border-top: 4px solid #A5A8A9;
 }
 
 section {
@@ -67,8 +76,10 @@ section {
 }
 
 h2 {
-    color: #183b5b;
+    color: #005A91;
 }
+
+/* Images */
 
 .web-image {
     display: block;
@@ -79,8 +90,10 @@ h2 {
     border-radius: 8px;
 }
 
+/* Links */
+
 main a {
-    color: #005ea8;
+    color: #005A91;
 }
 
 main a:focus,
@@ -88,16 +101,20 @@ main a:hover {
     text-decoration: none;
 }
 
+/* Footer */
+
 footer {
-    background-color: #183b5b;
+    background-color: #002F87;
     color: #ffffff;
     text-align: center;
     padding: 20px;
     margin-top: 30px;
 }
 
-/* Mobile layout for phones */
+/* Mobile Layout */
+
 @media (max-width: 600px) {
+
     header {
         padding: 28px 15px;
     }
@@ -143,8 +160,10 @@ footer {
     }
 }
 
-/* Additional adjustments for very small phones */
+/* Extra Small Phone Screens */
+
 @media (max-width: 360px) {
+
     header h1 {
         font-size: 1.5rem;
     }
