@@ -1,0 +1,347 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="COP4813 Assignment 10 mobile Lighthouse audit.">
+    <title>Assignment 10 | Mobile Ready</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .report-intro {
+            border-left: 4px solid #0079C1;
+            padding: 12px 18px;
+            background: #f1f3f5;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns:
+                repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .score-card {
+            text-align: center;
+            background: #f1f3f5;
+            padding: 20px 10px;
+            border-radius: 8px;
+        }
+
+        .score-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .score-card p {
+            margin: 5px 0;
+        }
+
+        .good {
+            color: #16783b;
+        }
+
+        .needs-work {
+            color: #9b5900;
+        }
+
+        .report-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .report-table th,
+        .report-table td {
+            padding: 12px;
+            border: 1px solid #c8cdd2;
+            text-align: left;
+        }
+
+        .report-table th {
+            background: #002F87;
+            color: white;
+        }
+
+        .report-table tr:nth-child(even) {
+            background: #f1f3f5;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .report-image {
+            width: 100%;
+            height: auto;
+            border: 1px solid #c8cdd2;
+            border-radius: 6px;
+            margin: 10px 0 20px;
+        }
+
+        .report-link {
+            display: inline-block;
+            background: #002F87;
+            color: white;
+            padding: 12px 18px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin: 10px 0;
+        }
+
+        .report-link:hover,
+        .report-link:focus {
+            background: #005A91;
+            color: white;
+        }
+
+        @media (max-width: 600px) {
+            .score-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .score-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Imran Lufi</h1>
+    <p>COP4813 - Web Systems I</p>
+</header>
+
+<nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Me</a>
+    <a href="assignments.html">Assignments</a>
+</nav>
+
+<main>
+
+    <section>
+        <h2>Assignment 10 - Mobile Ready</h2>
+
+        <div class="report-intro">
+            <p>
+                For this assignment, I updated my website
+                to make it easier to use on mobile devices.
+                I adjusted the navigation, spacing, and
+                layout using CSS media queries.
+            </p>
+
+            <p>
+                After making these changes, I tested my
+                homepage using Google Chrome Lighthouse
+                in Mobile and Navigation mode.
+            </p>
+
+            <p>
+                <strong>Test Date:</strong>
+                November 1, 2026
+            </p>
+
+            <p>
+                <strong>Website Tested:</strong>
+                <a href="index.html">My Homepage</a>
+            </p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Lighthouse Audit Scores</h2>
+
+        <div class="score-grid">
+
+            <div class="score-card">
+                <p class="score-number needs-work">63</p>
+                <p>Performance</p>
+                <small>Needs Improvement</small>
+            </div>
+
+            <div class="score-card">
+                <p class="score-number good">100</p>
+                <p>Accessibility</p>
+                <small>Passed</small>
+            </div>
+
+            <div class="score-card">
+                <p class="score-number good">100</p>
+                <p>Best Practices</p>
+                <small>Passed</small>
+            </div>
+
+            <div class="score-card">
+                <p class="score-number good">100</p>
+                <p>SEO</p>
+                <small>Passed</small>
+            </div>
+
+        </div>
+
+        <p>
+            I was happy to see that my website received
+            perfect scores in Accessibility, Best Practices,
+            and SEO. The Performance score was lower,
+            which showed me that there are still areas
+            where the website could load faster.
+        </p>
+
+        <h3>Overall Lighthouse Results</h3>
+
+        <img
+            class="report-image"
+            src="lighthouse-scores.png"
+            alt="Lighthouse scores showing Performance 63,
+                 Accessibility 100, Best Practices 100,
+                 and SEO 100">
+    </section>
+
+    <section>
+        <h2>Performance Issues</h2>
+
+        <p>
+            Lighthouse identified several opportunities
+            to improve the performance of my homepage.
+            The largest issue was image delivery.
+        </p>
+
+        <div class="table-scroll">
+            <table class="report-table">
+                <thead>
+                    <tr>
+                        <th>Issue</th>
+                        <th>Lighthouse Finding</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>Image Delivery</td>
+                        <td>1,044 KiB potential savings</td>
+                    </tr>
+
+                    <tr>
+                        <td>JavaScript Execution</td>
+                        <td>1.3 seconds</td>
+                    </tr>
+
+                    <tr>
+                        <td>Main-Thread Work</td>
+                        <td>2.4 seconds</td>
+                    </tr>
+
+                    <tr>
+                        <td>Unused JavaScript</td>
+                        <td>945 KiB potential savings</td>
+                    </tr>
+
+                    <tr>
+                        <td>JavaScript Minification</td>
+                        <td>73 KiB potential savings</td>
+                    </tr>
+
+                    <tr>
+                        <td>Image Dimensions</td>
+                        <td>
+                            Missing explicit width
+                            and height attributes
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>Cache Lifetimes</td>
+                        <td>1 KiB potential savings</td>
+                    </tr>
+
+                    <tr>
+                        <td>Long Tasks</td>
+                        <td>6 long tasks detected</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Performance Insights Screenshot</h3>
+
+        <img
+            class="report-image"
+            src="lighthouse-insights.png"
+            alt="Lighthouse performance insights">
+
+        <h3>Diagnostics Screenshot</h3>
+
+        <img
+            class="report-image"
+            src="lighthouse-diagnostics.png"
+            alt="Lighthouse performance diagnostics">
+    </section>
+
+    <section>
+        <h2>My Analysis</h2>
+
+        <p>
+            The Lighthouse results helped me understand
+            that a website can look good and still have
+            performance issues. My homepage uses a large
+            image, and Lighthouse showed that improving
+            image delivery could make a noticeable
+            difference in loading speed.
+        </p>
+
+        <p>
+            I also noticed several JavaScript warnings.
+            Since my homepage does not directly use
+            JavaScript, I looked more closely at the
+            report. Some of the JavaScript resources
+            came from browser extensions, so I would
+            need to test again without extensions to
+            get a clearer picture of my website's
+            actual performance.
+        </p>
+
+        <p>
+            Overall, I am satisfied with the mobile
+            improvements. The navigation is designed
+            to stack vertically on smaller screens,
+            and the image automatically adjusts to
+            the available width. In the future,
+            I would focus on optimizing the homepage
+            image and testing on different devices.
+        </p>
+    </section>
+
+    <section>
+        <h2>Complete Lighthouse Report</h2>
+
+        <p>
+            The full Lighthouse HTML report is also
+            available below for a more detailed
+            breakdown of the audit results.
+        </p>
+
+        <a class="report-link"
+           href="lighthouse-full-report.html">
+            View Full Lighthouse Report
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    <p>
+        &copy; 2026 Imran Lufi |
+        COP4813 Web Systems I
+    </p>
+</footer>
+
+</body>
+</html>
