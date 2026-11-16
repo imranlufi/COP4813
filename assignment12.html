@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="A comparison of five content management systems.">
+
+    <title>Assignment 12 | CMS Review</title>
+
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .cms-container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        .cms-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .cms-table th,
+        .cms-table td {
+            padding: 14px;
+            border: 1px solid #ccc;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        .cms-table th {
+            background-color: #253858;
+            color: white;
+        }
+
+        .cms-table tbody tr:nth-child(even) {
+            background-color: #f0f4f8;
+        }
+
+        .cms-table tbody tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .cms-table a {
+            color: #1764a0;
+            overflow-wrap: anywhere;
+        }
+
+        .cms-table ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>Content Management Systems Review</h1>
+        <p>COP4813 - Web Systems I</p>
+    </header>
+
+    <nav aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="about.html">About Me</a>
+        <a href="assignments.html">Assignments</a>
+    </nav>
+
+    <main class="cms-container">
+
+        <h2>Assignment 12 - CMS Comparison</h2>
+
+        <p>
+            This assignment compares five content
+            management systems based on their technology,
+            features, limitations, and real-world usage.
+        </p>
+
+        <p>
+            The comparison table is generated dynamically
+            using JavaScript and an external JSON file.
+        </p>
+
+        <div class="table-wrapper">
+
+            <table class="cms-table">
+                <thead>
+                    <tr>
+                        <th scope="col">System</th>
+                        <th scope="col">Produced/Sold By</th>
+                        <th scope="col">Technology Base</th>
+                        <th scope="col">Major Capabilities</th>
+                        <th scope="col">Major Limitations</th>
+                        <th scope="col">Example Site</th>
+                    </tr>
+                </thead>
+
+                <tbody id="cms-data">
+                    <tr>
+                        <td colspan="6">
+                            Loading CMS information...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <p>Imran Lufi | COP4813 Web Systems I</p>
+    </footer>
+
+    <script src="assignment12.js"></script>
+
+</body>
+</html>
