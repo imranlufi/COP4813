@@ -1,0 +1,93 @@
+
+[
+  {
+    "name": "WordPress",
+    "support": "Open-source software maintained by a global community and supported by many hosting companies.",
+    "technology": "PHP, MySQL or MariaDB, HTML, CSS, and JavaScript.",
+    "capabilities": [
+      "Thousands of themes and plugins",
+      "Built-in content editor",
+      "Supports blogs, business sites, and online stores",
+      "REST API for custom development"
+    ],
+    "limitations": [
+      "Plugins may introduce security risks",
+      "Frequent updates and maintenance",
+      "Too many plugins can slow performance"
+    ],
+    "example": "https://wordpress.org/showcase/",
+    "source": "https://wordpress.org/about/"
+  },
+  {
+    "name": "Drupal",
+    "support": "Open-source software maintained by the Drupal community and supported by professional agencies.",
+    "technology": "PHP, Symfony, MySQL, MariaDB, or PostgreSQL.",
+    "capabilities": [
+      "Advanced user permissions",
+      "Flexible content management",
+      "Multilingual website support",
+      "Suitable for large and complex websites"
+    ],
+    "limitations": [
+      "Steeper learning curve",
+      "Development may require technical knowledge",
+      "Custom development can be expensive"
+    ],
+    "example": "https://www.drupal.org/case-studies",
+    "source": "https://www.drupal.org/about"
+  },
+  {
+    "name": "Joomla",
+    "support": "Open-source software supported by volunteers and the Joomla community.",
+    "technology": "PHP, MySQL, MariaDB, or PostgreSQL.",
+    "capabilities": [
+      "Customizable templates",
+      "Extensions for additional features",
+      "Built-in multilingual support",
+      "User access management"
+    ],
+    "limitations": [
+      "Smaller extension marketplace than WordPress",
+      "Some extensions require payment",
+      "Advanced customization takes experience"
+    ],
+    "example": "https://community.joomla.org/",
+    "source": "https://www.joomla.org/about-joomla.html"
+  },
+  {
+    "name": "Ghost",
+    "support": "Open-source publishing platform developed by the Ghost Foundation.",
+    "technology": "Node.js, JavaScript, MySQL, HTML, and CSS.",
+    "capabilities": [
+      "Modern publishing editor",
+      "Built-in newsletters",
+      "Membership and subscription features",
+      "Themes and content API"
+    ],
+    "limitations": [
+      "Fewer plugins than WordPress",
+      "Less suitable for complex applications",
+      "Managed hosting may require a paid plan"
+    ],
+    "example": "https://ghost.org/explore/",
+    "source": "https://ghost.org/about/"
+  },
+  {
+    "name": "Shopify",
+    "support": "Commercial hosted platform developed and maintained by Shopify Inc.",
+    "technology": "Ruby on Rails, Liquid templates, JavaScript, HTML, CSS, and Shopify-managed databases.",
+    "capabilities": [
+      "Online store management",
+      "Payment processing",
+      "Inventory and order tracking",
+      "Themes and third-party apps"
+    ],
+    "limitations": [
+      "Monthly subscription costs",
+      "Some apps charge additional fees",
+      "Limited control over backend infrastructure"
+    ],
+    "example": "https://www.allbirds.com/",
+    "source": "https://www.shopify.com/"
+  }
+]
