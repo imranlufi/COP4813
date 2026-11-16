@@ -15,7 +15,7 @@
       "Frequent updates and maintenance",
       "Too many plugins can slow performance"
     ],
-    "example": "https://wordpress.org/showcase/",
+    "example": "https://techcrunch.com/",
     "source": "https://wordpress.org/about/"
   },
   {
@@ -33,7 +33,7 @@
       "Development may require technical knowledge",
       "Custom development can be expensive"
     ],
-    "example": "https://www.drupal.org/case-studies",
+    "example": "https://www.boston.gov/",
     "source": "https://www.drupal.org/about"
   },
   {
@@ -51,7 +51,7 @@
       "Some extensions require payment",
       "Advanced customization takes experience"
     ],
-    "example": "https://community.joomla.org/",
+    "example": "https://www.joomla.org/",
     "source": "https://www.joomla.org/about-joomla.html"
   },
   {
@@ -69,7 +69,7 @@
       "Less suitable for complex applications",
       "Managed hosting may require a paid plan"
     ],
-    "example": "https://ghost.org/explore/",
+    "example": "https://404media.co/",
     "source": "https://ghost.org/about/"
   },
   {
