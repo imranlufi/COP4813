@@ -1,0 +1,457 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>Assignment 13 | Math Mission</title>
+    <link rel="stylesheet" href="styles.css">
+
+    <style>
+        .game-container {
+            max-width: 750px;
+            margin: 30px auto;
+            padding: 25px;
+            background: #101d3a;
+            color: white;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .game-container h2 {
+            color: #ffd166;
+        }
+
+        .game-container p {
+            color: #e2e8f0;
+        }
+
+        .game-panel {
+            background: #20345a;
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .rocket {
+            font-size: 65px;
+            margin: 15px 0;
+        }
+
+        .scoreboard {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .progress {
+            background: #435575;
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+
+        .progress-bar {
+            background: #ffd166;
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        #question {
+            font-size: 32px;
+            margin: 25px 0;
+            color: white;
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .game-container button {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #3c82d6;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .game-container button:hover:not(:disabled) {
+            background: #2563a8;
+        }
+
+        .game-container button:disabled {
+            cursor: default;
+        }
+
+        .game-container button.correct {
+            background: #15803d;
+        }
+
+        .game-container button.incorrect {
+            background: #b91c1c;
+        }
+
+        #feedback {
+            min-height: 30px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #next-button,
+        #restart-button {
+            margin-top: 15px;
+            background: #e9a23b;
+            color: #172033;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 500px) {
+            .game-container {
+                padding: 15px;
+            }
+
+            .game-panel {
+                padding: 15px;
+            }
+
+            .answers {
+                gap: 7px;
+            }
+
+            #question {
+                font-size: 27px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Math Mission - Space Academy</h1>
+    <p>COP4813 - Web Systems I</p>
+</header>
+
+<nav aria-label="Main navigation">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Me</a>
+    <a href="assignments.html">Assignments</a>
+</nav>
+
+<main>
+    <section class="game-container">
+
+        <h2>Welcome, Space Cadet!</h2>
+
+        <div class="rocket" aria-hidden="true">
+            🚀
+        </div>
+
+        <p>
+            Your spaceship needs math power to
+            complete its journey through space.
+        </p>
+
+        <h3>How to Play</h3>
+
+        <p>
+            Answer 10 addition and subtraction questions.
+            Choose the correct answer to earn 10 points.
+            Each correct answer powers your spaceship.
+            Try to earn 100 points!
+        </p>
+
+        <div class="game-panel">
+
+            <div class="scoreboard">
+                <span id="mission-number">
+                    Mission 1 of 10
+                </span>
+
+                <span id="score">
+                    Score: 0
+                </span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-bar"
+                     id="progress-bar"></div>
+            </div>
+
+            <div id="game-screen">
+
+                <h2 id="question">
+                    Ready for launch?
+                </h2>
+
+                <div class="answers"
+                     id="answers"></div>
+
+                <p id="feedback"
+                   aria-live="polite"></p>
+
+                <button id="next-button"
+                        class="hidden">
+                    Next Mission
+                </button>
+
+            </div>
+
+            <div id="result-screen"
+                 class="hidden">
+
+                <h2>Mission Complete!</h2>
+
+                <p id="final-score"></p>
+
+                <p id="final-message"></p>
+
+                <button id="restart-button">
+                    Play Again
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+</main>
+
+<footer>
+    <p>
+        &copy; 2026 Imran Lufi |
+        COP4813 Web Systems I
+    </p>
+</footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const totalQuestions = 10;
+
+    let currentQuestion = 0;
+    let score = 0;
+    let correctAnswer = 0;
+    let answered = false;
+
+    const questionElement =
+        document.getElementById("question");
+
+    const answersElement =
+        document.getElementById("answers");
+
+    const feedbackElement =
+        document.getElementById("feedback");
+
+    const scoreElement =
+        document.getElementById("score");
+
+    const missionElement =
+        document.getElementById("mission-number");
+
+    const progressBar =
+        document.getElementById("progress-bar");
+
+    const nextButton =
+        document.getElementById("next-button");
+
+    const restartButton =
+        document.getElementById("restart-button");
+
+    function randomNumber(min, max) {
+        return Math.floor(
+            Math.random() * (max - min + 1)
+        ) + min;
+    }
+
+    function createQuestion() {
+
+        answered = false;
+
+        feedbackElement.textContent = "";
+        nextButton.classList.add("hidden");
+        answersElement.innerHTML = "";
+
+        const number1 = randomNumber(1, 10);
+        const number2 = randomNumber(1, 10);
+
+        const addition = Math.random() < 0.5;
+
+        let questionText;
+
+        if (addition) {
+            correctAnswer = number1 + number2;
+            questionText =
+                number1 + " + " + number2 + " = ?";
+        } else {
+            const larger = Math.max(number1, number2);
+            const smaller = Math.min(number1, number2);
+
+            correctAnswer = larger - smaller;
+            questionText =
+                larger + " - " + smaller + " = ?";
+        }
+
+        questionElement.textContent = questionText;
+
+        missionElement.textContent =
+            "Mission " + (currentQuestion + 1) +
+            " of " + totalQuestions;
+
+        scoreElement.textContent =
+            "Score: " + score;
+
+        progressBar.style.width =
+            (currentQuestion / totalQuestions * 100) + "%";
+
+        const choices = [correctAnswer];
+
+        while (choices.length < 3) {
+            const wrongAnswer =
+                Math.max(0, correctAnswer + randomNumber(-5, 5));
+
+            if (!choices.includes(wrongAnswer)) {
+                choices.push(wrongAnswer);
+            }
+        }
+
+        choices.sort(function () {
+            return Math.random() - 0.5;
+        });
+
+        choices.forEach(function (choice) {
+
+            const button =
+                document.createElement("button");
+
+            button.textContent = choice;
+
+            button.addEventListener("click", function () {
+                checkAnswer(choice, button);
+            });
+
+            answersElement.appendChild(button);
+        });
+    }
+
+    function checkAnswer(choice, selectedButton) {
+
+        if (answered) {
+            return;
+        }
+
+        answered = true;
+
+        const buttons =
+            answersElement.querySelectorAll("button");
+
+        buttons.forEach(function (button) {
+            button.disabled = true;
+
+            if (Number(button.textContent) === correctAnswer) {
+                button.classList.add("correct");
+            }
+        });
+
+        if (choice === correctAnswer) {
+
+            score += 10;
+
+            feedbackElement.textContent =
+                "Correct! +10 energy points!";
+
+        } else {
+
+            selectedButton.classList.add("incorrect");
+
+            feedbackElement.textContent =
+                "Not quite! The correct answer is " +
+                correctAnswer + ".";
+        }
+
+        scoreElement.textContent =
+            "Score: " + score;
+
+        nextButton.textContent =
+            currentQuestion === totalQuestions - 1
+            ? "Finish Mission"
+            : "Next Mission";
+
+        nextButton.classList.remove("hidden");
+    }
+
+    function finishGame() {
+
+        document.getElementById("game-screen")
+            .classList.add("hidden");
+
+        document.getElementById("result-screen")
+            .classList.remove("hidden");
+
+        progressBar.style.width = "100%";
+
+        missionElement.textContent =
+            "All Missions Complete";
+
+        document.getElementById("final-score")
+            .textContent =
+            "Your final score: " + score + " / 100";
+
+        let message;
+
+        if (score === 100) {
+            message = "Amazing! You are a Math Commander!";
+        } else if (score >= 70) {
+            message = "Great job, Space Explorer!";
+        } else {
+            message = "Good effort! Keep practicing your math skills!";
+        }
+
+        document.getElementById("final-message")
+            .textContent = message;
+    }
+
+    nextButton.addEventListener("click", function () {
+
+        currentQuestion++;
+
+        if (currentQuestion >= totalQuestions) {
+            finishGame();
+        } else {
+            createQuestion();
+        }
+    });
+
+    restartButton.addEventListener("click", function () {
+
+        currentQuestion = 0;
+        score = 0;
+
+        document.getElementById("game-screen")
+            .classList.remove("hidden");
+
+        document.getElementById("result-screen")
+            .classList.add("hidden");
+
+        createQuestion();
+    });
+
+    createQuestion();
+
+});
+</script>
+
+</body>
+</html>
