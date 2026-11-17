@@ -2,289 +2,275 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="An interactive educational math game featuring a rocket journey to the Moon.">
-    <title>Assignment 13 | Math Mission</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="An educational math adventure through space.">
+<title>Assignment 13 | Math Mission</title>
+<link rel="stylesheet" href="styles.css">
 
-    <style>
-        .game-container {
-            max-width: 850px;
-            margin: 30px auto;
-            padding: 25px;
-            background: #101d3a;
-            color: white;
-            border-radius: 15px;
-            text-align: center;
-            box-sizing: border-box;
-        }
+<style>
+.game-container {
+    max-width: 850px;
+    margin: 30px auto;
+    padding: 20px;
+    background: #101d3a;
+    color: white;
+    border-radius: 16px;
+    text-align: center;
+    box-sizing: border-box;
+}
+.game-container h2 { color: #ffd166; }
+.game-container p { color: #e2e8f0; }
+.game-panel {
+    background: #20345a;
+    padding: 20px;
+    border-radius: 14px;
+    margin-top: 20px;
+}
+.scoreboard, .fuel-label {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    font-weight: bold;
+}
+.scoreboard { margin-bottom: 15px; }
+.space-scene {
+    position: relative;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 2px solid #6479a5;
+    background: radial-gradient(ellipse at 75% 30%,
+        #273f80 0%, #111c42 45%, #060b1f 100%);
+    isolation: isolate;
+}
+.space-scene.landing {
+    box-shadow: 0 0 25px #ffd166;
+}
+.stars {
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(2px 2px at 20px 30px, white 90%, transparent),
+        radial-gradient(2px 2px at 90px 90px, white 90%, transparent),
+        radial-gradient(3px 3px at 170px 45px, #ffd166 90%, transparent),
+        radial-gradient(2px 2px at 260px 120px, white 90%, transparent),
+        radial-gradient(2px 2px at 340px 25px, white 90%, transparent),
+        radial-gradient(2px 2px at 410px 160px, white 90%, transparent);
+    background-size: 450px 190px;
+    animation: starDrift 22s linear infinite;
+}
+@keyframes starDrift {
+    to { background-position: -450px 0; }
+}
+.nebula {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: 40%;
+    top: -80px;
+    background: radial-gradient(circle, #8556e044, transparent 70%);
+    filter: blur(12px);
+    animation: nebulaGlow 5s ease-in-out infinite alternate;
+}
+@keyframes nebulaGlow {
+    to { opacity: .35; transform: scale(1.3); }
+}
+.earth, .moon {
+    position: absolute;
+    bottom: 20px;
+    font-size: 55px;
+    z-index: 1;
+}
+.earth { left: 12px; }
+.moon {
+    right: 12px;
+    filter: drop-shadow(0 0 14px #fff5b5);
+}
+.moon.arrived {
+    animation: moonGlow .8s ease-in-out infinite alternate;
+}
+@keyframes moonGlow {
+    to { filter: drop-shadow(0 0 32px #ffd166); }
+}
+.flight-path {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+.flight-path path {
+    fill: none;
+    stroke: #93a9d2;
+    stroke-width: 2;
+    stroke-dasharray: 5 8;
+    opacity: .6;
+}
+.rocket {
+    position: absolute;
+    left: 10%;
+    top: 68%;
+    z-index: 5;
+    font-size: 44px;
+    transform: translate(-50%, -50%) rotate(42deg);
+    transition: left 1.1s ease-in-out, top 1.1s ease-in-out,
+                transform 1.1s ease-in-out;
+    filter: drop-shadow(0 0 7px #ffae55);
+}
+.rocket.boost {
+    animation: rocketShake .12s linear 6;
+}
+@keyframes rocketShake {
+    25% { margin-left: -3px; }
+    75% { margin-left: 3px; }
+}
+.flame {
+    position: absolute;
+    width: 15px;
+    height: 35px;
+    left: 50%;
+    bottom: -16px;
+    transform: translateX(-50%);
+    background: linear-gradient(#fff6a2, #ff9b24, #ff4538);
+    border-radius: 50% 50% 65% 65%;
+    opacity: 0;
+    z-index: -1;
+}
+.rocket.boost .flame {
+    opacity: 1;
+    animation: flamePulse .12s infinite alternate;
+}
+@keyframes flamePulse {
+    to { height: 48px; width: 19px; }
+}
+.particle {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ffd166;
+    z-index: 4;
+    pointer-events: none;
+    animation: particleBurst .8s ease-out forwards;
+}
+@keyframes particleBurst {
+    to {
+        transform: translate(var(--dx), var(--dy)) scale(0);
+        opacity: 0;
+    }
+}
+.scene-labels {
+    position: absolute;
+    bottom: 5px;
+    left: 12px;
+    right: 12px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    font-weight: bold;
+    z-index: 2;
+}
+.fuel-section { margin: 20px 0; text-align: left; }
+.fuel-label { margin-bottom: 8px; }
+.fuel-tank {
+    height: 24px;
+    background: #101d3a;
+    border: 2px solid #8193b5;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.fuel-fill {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #17a66b, #7dffac);
+    transition: width 1s ease;
+}
+.star-rewards {
+    font-size: 23px;
+    letter-spacing: 3px;
+    margin: 15px 0;
+    overflow-wrap: anywhere;
+}
+.progress {
+    height: 9px;
+    background: #435575;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 18px 0;
+}
+.progress-bar {
+    height: 100%;
+    width: 0;
+    background: #ffd166;
+    transition: width .5s;
+}
+#question {
+    font-size: 34px;
+    margin: 22px 0;
+    color: white;
+}
+.answers {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+}
+.game-container button {
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #3c82d6;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+}
+.game-container button:hover:not(:disabled) {
+    background: #2563a8;
+}
+.game-container button:disabled { cursor: default; }
+.game-container button.correct { background: #15803d; }
+.game-container button.incorrect { background: #b91c1c; }
+#feedback {
+    min-height: 35px;
+    font-weight: bold;
+    margin-top: 18px;
+}
+#next-button, #restart-button {
+    margin-top: 12px;
+    background: #e9a23b;
+    color: #172033;
+}
+.celebration {
+    font-size: 60px;
+    margin: 18px 0;
+    animation: celebrate 1s ease-in-out infinite alternate;
+}
+@keyframes celebrate {
+    to { transform: scale(1.2) rotate(10deg); }
+}
+.hidden { display: none !important; }
 
-        .game-container h2 {
-            color: #ffd166;
-        }
-
-        .game-container p {
-            color: #e2e8f0;
-        }
-
-        .game-panel {
-            background: #20345a;
-            padding: 25px;
-            border-radius: 12px;
-            margin-top: 20px;
-        }
-
-        .scoreboard {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 18px;
-            font-weight: bold;
-        }
-
-        .space-scene {
-            position: relative;
-            height: 200px;
-            background: linear-gradient(#080e25, #172c57);
-            border: 2px solid #435575;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 22px;
-        }
-
-        .stars {
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(2px 2px at 20px 30px, white 90%, transparent),
-                radial-gradient(2px 2px at 90px 90px, white 90%, transparent),
-                radial-gradient(2px 2px at 170px 45px, white 90%, transparent),
-                radial-gradient(2px 2px at 260px 120px, white 90%, transparent),
-                radial-gradient(2px 2px at 340px 25px, white 90%, transparent);
-            background-size: 360px 150px;
-            animation: starMove 15s linear infinite;
-        }
-
-        @keyframes starMove {
-            from { background-position: 0 0; }
-            to { background-position: -360px 0; }
-        }
-
-        .planet {
-            position: absolute;
-            bottom: 22px;
-            font-size: 45px;
-        }
-
-        .earth {
-            left: 15px;
-        }
-
-        .moon {
-            right: 15px;
-        }
-
-        .flight-path {
-            position: absolute;
-            left: 12%;
-            right: 12%;
-            top: 90px;
-            border-top: 2px dashed #7188b8;
-            opacity: 0.6;
-        }
-
-        .rocket {
-            position: absolute;
-            left: 10%;
-            top: 68px;
-            font-size: 42px;
-            transform: translateX(-50%) rotate(45deg);
-            transition: left 0.8s ease-in-out, top 0.8s ease-in-out;
-            z-index: 2;
-        }
-
-        .rocket.boost {
-            animation: rocketBoost 0.6s ease-in-out;
-        }
-
-        @keyframes rocketBoost {
-            0%, 100% {
-                filter: drop-shadow(0 0 0 transparent);
-            }
-            50% {
-                filter: drop-shadow(0 0 15px orange);
-            }
-        }
-
-        .scene-labels {
-            position: absolute;
-            bottom: 5px;
-            left: 12px;
-            right: 12px;
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-        }
-
-        .fuel-section {
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        .fuel-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .fuel-tank {
-            height: 22px;
-            background: #101d3a;
-            border: 2px solid #8193b5;
-            border-radius: 7px;
-            overflow: hidden;
-        }
-
-        .fuel-fill {
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #20a36b, #7fffb1);
-            transition: width 0.8s ease;
-        }
-
-        .progress {
-            background: #435575;
-            height: 10px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 18px 0;
-        }
-
-        .progress-bar {
-            background: #ffd166;
-            height: 100%;
-            width: 0%;
-            transition: width 0.4s;
-        }
-
-        #question {
-            font-size: 32px;
-            margin: 25px 0;
-            color: white;
-        }
-
-        .answers {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-        }
-
-        .game-container button {
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            background: #3c82d6;
-            color: white;
-            font-size: 18px;
-            cursor: pointer;
-        }
-
-        .game-container button:hover:not(:disabled) {
-            background: #2563a8;
-        }
-
-        .game-container button:disabled {
-            cursor: default;
-        }
-
-        .game-container button.correct {
-            background: #15803d;
-        }
-
-        .game-container button.incorrect {
-            background: #b91c1c;
-        }
-
-        #feedback {
-            min-height: 30px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-
-        #next-button,
-        #restart-button {
-            margin-top: 15px;
-            background: #e9a23b;
-            color: #172033;
-        }
-
-        .celebration {
-            font-size: 55px;
-            margin: 20px 0;
-            animation: celebrate 1s ease-in-out infinite alternate;
-        }
-
-        @keyframes celebrate {
-            from { transform: scale(1) rotate(-8deg); }
-            to { transform: scale(1.2) rotate(8deg); }
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        @media (max-width: 500px) {
-            .game-container {
-                padding: 15px;
-            }
-
-            .game-panel {
-                padding: 15px;
-            }
-
-            .space-scene {
-                height: 170px;
-            }
-
-            .rocket {
-                font-size: 35px;
-            }
-
-            .planet {
-                font-size: 35px;
-            }
-
-            .answers {
-                gap: 7px;
-            }
-
-            #question {
-                font-size: 27px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            .stars,
-            .rocket.boost,
-            .celebration {
-                animation: none;
-            }
-
-            .rocket,
-            .fuel-fill,
-            .progress-bar {
-                transition: none;
-            }
-        }
-    </style>
+@media (max-width: 500px) {
+    .game-container, .game-panel { padding: 14px; }
+    .space-scene { height: 190px; }
+    .rocket { font-size: 35px; }
+    .earth, .moon { font-size: 38px; }
+    .star-rewards { font-size: 18px; letter-spacing: 1px; }
+    #question { font-size: 28px; }
+    .answers { gap: 7px; }
+    .scoreboard { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .stars, .nebula, .moon.arrived, .celebration,
+    .rocket.boost, .rocket.boost .flame {
+        animation: none;
+    }
+    .rocket, .fuel-fill, .progress-bar { transition: none; }
+}
+</style>
 </head>
 
 <body>
-
 <header>
     <h1>Math Mission - Space Academy</h1>
     <p>COP4813 - Web Systems I</p>
@@ -297,108 +283,89 @@
 </nav>
 
 <main>
-    <section class="game-container">
+<section class="game-container">
+    <h2>Welcome, Space Cadet!</h2>
+    <p>
+        Solve math problems to power your spaceship
+        from Earth all the way to the Moon!
+    </p>
 
-        <h2>Welcome, Space Cadet!</h2>
+    <h3>How to Play</h3>
+    <p>
+        Every correct answer earns 10 points, one star,
+        and 10% rocket fuel. Collect 10 stars to land
+        on the Moon! If you miss a question, don't worry.
+        You can keep trying until you reach your destination.
+    </p>
 
-        <p>
-            Your mission is to travel from Earth to the Moon
-            by solving math problems!
-        </p>
-
-        <h3>How to Play</h3>
-
-        <p>
-            Answer 10 addition and subtraction questions.
-            Each correct answer earns 10 points, adds 10%
-            fuel, and moves your rocket closer to the Moon.
-            Try to reach the Moon with 100 points!
-        </p>
-
-        <div class="game-panel">
-
-            <div class="scoreboard">
-                <span id="mission-number">Mission 1 of 10</span>
-                <span id="score">Score: 0</span>
-            </div>
-
-            <div class="space-scene"
-                 role="img"
-                 aria-label="Rocket traveling from Earth toward the Moon">
-
-                <div class="stars"></div>
-                <div class="flight-path"></div>
-
-                <div class="planet earth" aria-hidden="true">🌎</div>
-                <div class="planet moon" aria-hidden="true">🌕</div>
-
-                <div class="rocket" id="rocket" aria-hidden="true">
-                    🚀
-                </div>
-
-                <div class="scene-labels">
-                    <span>EARTH</span>
-                    <span>MOON</span>
-                </div>
-            </div>
-
-            <div class="fuel-section">
-                <div class="fuel-label">
-                    <span>Rocket Fuel</span>
-                    <span id="fuel-percent">0%</span>
-                </div>
-
-                <div class="fuel-tank"
-                     role="progressbar"
-                     id="fuel-progress"
-                     aria-label="Rocket fuel"
-                     aria-valuemin="0"
-                     aria-valuemax="100"
-                     aria-valuenow="0">
-
-                    <div class="fuel-fill" id="fuel-fill"></div>
-                </div>
-            </div>
-
-            <div class="progress">
-                <div class="progress-bar" id="progress-bar"></div>
-            </div>
-
-            <div id="game-screen">
-
-                <h2 id="question">Ready for launch?</h2>
-
-                <div class="answers" id="answers"></div>
-
-                <p id="feedback" aria-live="polite"></p>
-
-                <button id="next-button" class="hidden">
-                    Next Mission
-                </button>
-
-            </div>
-
-            <div id="result-screen" class="hidden">
-
-                <div class="celebration" id="result-icon">
-                    🌟
-                </div>
-
-                <h2 id="result-title">Mission Complete!</h2>
-
-                <p id="final-score"></p>
-
-                <p id="final-message"></p>
-
-                <button id="restart-button">
-                    Play Again
-                </button>
-
-            </div>
-
+    <div class="game-panel">
+        <div class="scoreboard">
+            <span id="mission-number">Stars: 0 of 10</span>
+            <span id="score">Score: 0</span>
         </div>
 
-    </section>
+        <div class="space-scene" id="space-scene"
+             role="img" aria-label="Animated rocket journey from Earth to Moon">
+            <div class="stars"></div>
+            <div class="nebula"></div>
+
+            <svg class="flight-path" viewBox="0 0 600 250"
+                 preserveAspectRatio="none" aria-hidden="true">
+                <path d="M60 170 Q300 15 540 170"></path>
+            </svg>
+
+            <div class="earth" aria-hidden="true">🌎</div>
+            <div class="moon" id="moon" aria-hidden="true">🌕</div>
+
+            <div class="rocket" id="rocket" aria-hidden="true">
+                🚀
+                <div class="flame"></div>
+            </div>
+
+            <div class="scene-labels">
+                <span>EARTH</span>
+                <span>MOON</span>
+            </div>
+        </div>
+
+        <div class="fuel-section">
+            <div class="fuel-label">
+                <span>Rocket Fuel</span>
+                <span id="fuel-percent">0%</span>
+            </div>
+            <div class="fuel-tank" id="fuel-progress"
+                 role="progressbar" aria-label="Rocket fuel"
+                 aria-valuemin="0" aria-valuemax="100"
+                 aria-valuenow="0">
+                <div class="fuel-fill" id="fuel-fill"></div>
+            </div>
+        </div>
+
+        <div class="star-rewards" id="star-rewards"
+             aria-label="0 of 10 stars earned"></div>
+
+        <div class="progress">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <div id="game-screen">
+            <h2 id="question">Ready for launch?</h2>
+            <div class="answers" id="answers"></div>
+            <p id="feedback" aria-live="polite"></p>
+            <button id="next-button" class="hidden">
+                Next Question
+            </button>
+        </div>
+
+        <div id="result-screen" class="hidden">
+            <div class="celebration" aria-hidden="true">🏆🌕🚀</div>
+            <h2>Moon Landing Successful!</h2>
+            <p id="final-score"></p>
+            <p id="final-message"></p>
+            <button id="restart-button">Play Again</button>
+        </div>
+    </div>
+</section>
 </main>
 
 <footer>
@@ -407,239 +374,235 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
-    const totalQuestions = 10;
-
-    let currentQuestion = 0;
-    let score = 0;
+    const goal = 10;
+    let correctCount = 0;
+    let attempts = 0;
     let correctAnswer = 0;
     let answered = false;
 
-    const questionElement = document.getElementById("question");
-    const answersElement = document.getElementById("answers");
-    const feedbackElement = document.getElementById("feedback");
-    const scoreElement = document.getElementById("score");
-    const missionElement = document.getElementById("mission-number");
-    const progressBar = document.getElementById("progress-bar");
-    const nextButton = document.getElementById("next-button");
-    const restartButton = document.getElementById("restart-button");
-
-    const rocket = document.getElementById("rocket");
-    const fuelFill = document.getElementById("fuel-fill");
-    const fuelPercent = document.getElementById("fuel-percent");
-    const fuelProgress = document.getElementById("fuel-progress");
+    const $ = id => document.getElementById(id);
+    const scene = $("space-scene");
+    const rocket = $("rocket");
 
     function randomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function updateJourney() {
-        const percentage = score;
+    function updateStars() {
+        $("star-rewards").textContent =
+            "⭐".repeat(correctCount) +
+            "☆".repeat(goal - correctCount);
+        $("star-rewards").setAttribute(
+            "aria-label", correctCount + " of 10 stars earned"
+        );
+    }
 
-        fuelFill.style.width = percentage + "%";
-        fuelPercent.textContent = percentage + "%";
-        fuelProgress.setAttribute("aria-valuenow", percentage);
+    function updateJourney(animate = true) {
+        const progress = correctCount / goal;
+        const percentage = progress * 100;
 
-        // Move from 10% to 90% of the scene.
-        rocket.style.left = (10 + percentage * 0.8) + "%";
+        $("fuel-fill").style.width = percentage + "%";
+        $("fuel-percent").textContent = percentage + "%";
+        $("fuel-progress").setAttribute("aria-valuenow", percentage);
+        $("progress-bar").style.width = percentage + "%";
+        $("mission-number").textContent =
+            "Stars: " + correctCount + " of " + goal;
+        $("score").textContent = "Score: " + correctCount * 10;
 
-        // Make the rocket rise and descend along its journey.
-        const journey = percentage / 100;
-        const height = 68 - Math.sin(journey * Math.PI) * 45;
-        rocket.style.top = height + "px";
+        // Quadratic Bezier curve:
+        // Earth (10%, 68%) -> high point (50%, 6%)
+        // -> Moon (90%, 68%).
+        const startX = 10, startY = 68;
+        const controlX = 50, controlY = -2;
+        const endX = 90, endY = 68;
+        const t = progress;
+        const inverse = 1 - t;
 
-        rocket.classList.remove("boost");
+        const x = inverse * inverse * startX +
+                  2 * inverse * t * controlX +
+                  t * t * endX;
+        const y = inverse * inverse * startY +
+                  2 * inverse * t * controlY +
+                  t * t * endY;
 
-        if (percentage > 0) {
+        rocket.style.left = x + "%";
+        rocket.style.top = y + "%";
+
+        // Rotate the rocket to follow the flight curve.
+        const slope = (controlY - startY) * inverse +
+                      (endY - controlY) * t;
+        const rotation = 42 + slope * 0.3;
+        rocket.style.transform =
+            "translate(-50%, -50%) rotate(" + rotation + "deg)";
+
+        updateStars();
+
+        if (animate && correctCount > 0) {
+            rocket.classList.remove("boost");
             void rocket.offsetWidth;
             rocket.classList.add("boost");
+            createParticles();
+        }
+    }
+
+    function createParticles() {
+        const rect = scene.getBoundingClientRect();
+        const rocketRect = rocket.getBoundingClientRect();
+
+        const x = rocketRect.left - rect.left +
+                  rocketRect.width / 2;
+        const y = rocketRect.top - rect.top +
+                  rocketRect.height / 2;
+
+        for (let i = 0; i < 12; i++) {
+            const particle = document.createElement("span");
+            particle.className = "particle";
+            particle.style.left = x + "px";
+            particle.style.top = y + "px";
+            particle.style.setProperty(
+                "--dx", randomNumber(-65, 65) + "px"
+            );
+            particle.style.setProperty(
+                "--dy", randomNumber(-65, 65) + "px"
+            );
+            scene.appendChild(particle);
+            particle.addEventListener("animationend", () => {
+                particle.remove();
+            }, { once: true });
         }
     }
 
     function createQuestion() {
         answered = false;
+        $("feedback").textContent = "";
+        $("next-button").classList.add("hidden");
+        $("answers").innerHTML = "";
 
-        feedbackElement.textContent = "";
-        nextButton.classList.add("hidden");
-        answersElement.innerHTML = "";
-
-        const number1 = randomNumber(1, 10);
-        const number2 = randomNumber(1, 10);
+        const a = randomNumber(1, 10);
+        const b = randomNumber(1, 10);
         const addition = Math.random() < 0.5;
 
-        let questionText;
-
         if (addition) {
-            correctAnswer = number1 + number2;
-            questionText = number1 + " + " + number2 + " = ?";
+            correctAnswer = a + b;
+            $("question").textContent = a + " + " + b + " = ?";
         } else {
-            const larger = Math.max(number1, number2);
-            const smaller = Math.min(number1, number2);
-
+            const larger = Math.max(a, b);
+            const smaller = Math.min(a, b);
             correctAnswer = larger - smaller;
-            questionText = larger + " - " + smaller + " = ?";
+            $("question").textContent =
+                larger + " - " + smaller + " = ?";
         }
-
-        questionElement.textContent = questionText;
-
-        missionElement.textContent =
-            "Mission " + (currentQuestion + 1) +
-            " of " + totalQuestions;
-
-        scoreElement.textContent = "Score: " + score;
-
-        progressBar.style.width =
-            (currentQuestion / totalQuestions * 100) + "%";
 
         const choices = [correctAnswer];
 
         while (choices.length < 3) {
-            const wrongAnswer = Math.max(
-                0,
-                correctAnswer + randomNumber(-5, 5)
+            const wrong = Math.max(
+                0, correctAnswer + randomNumber(-5, 5)
             );
-
-            if (!choices.includes(wrongAnswer)) {
-                choices.push(wrongAnswer);
-            }
+            if (!choices.includes(wrong)) choices.push(wrong);
         }
 
-        // Shuffle the answer choices.
         for (let i = choices.length - 1; i > 0; i--) {
             const j = randomNumber(0, i);
             [choices[i], choices[j]] = [choices[j], choices[i]];
         }
 
-        choices.forEach(function (choice) {
+        choices.forEach(choice => {
             const button = document.createElement("button");
-
             button.type = "button";
             button.textContent = choice;
-
-            button.addEventListener("click", function () {
+            button.addEventListener("click", () => {
                 checkAnswer(choice, button);
             });
-
-            answersElement.appendChild(button);
+            $("answers").appendChild(button);
         });
     }
 
     function checkAnswer(choice, selectedButton) {
-        if (answered) {
-            return;
-        }
-
+        if (answered) return;
         answered = true;
+        attempts++;
 
-        const buttons = answersElement.querySelectorAll("button");
-
-        buttons.forEach(function (button) {
+        const buttons = $("answers").querySelectorAll("button");
+        buttons.forEach(button => {
             button.disabled = true;
-
             if (Number(button.textContent) === correctAnswer) {
                 button.classList.add("correct");
             }
         });
 
         if (choice === correctAnswer) {
-            score += 10;
-
-            feedbackElement.textContent =
-                "Correct! +10 fuel! Your rocket is moving forward!";
-
+            correctCount++;
+            $("feedback").textContent =
+                "Awesome! You earned a star! Your rocket is flying!";
             updateJourney();
         } else {
             selectedButton.classList.add("incorrect");
 
-            feedbackElement.textContent =
-                "Not quite! The correct answer is " +
-                correctAnswer + ". No fuel earned.";
+            const messages = [
+                "Good try, Space Cadet!",
+                "Keep going! You can do it!",
+                "Every astronaut learns by trying!",
+                "Your next mission is waiting!"
+            ];
+
+            $("feedback").textContent =
+                messages[randomNumber(0, messages.length - 1)] +
+                " The answer was " + correctAnswer + ".";
         }
 
-        scoreElement.textContent = "Score: " + score;
-
-        progressBar.style.width =
-            ((currentQuestion + 1) / totalQuestions * 100) + "%";
-
-        nextButton.textContent =
-            currentQuestion === totalQuestions - 1
-                ? "Finish Mission"
-                : "Next Mission";
-
-        nextButton.classList.remove("hidden");
+        $("next-button").textContent =
+            correctCount === goal
+                ? "Land on the Moon!"
+                : "Next Question";
+        $("next-button").classList.remove("hidden");
     }
 
     function finishGame() {
-        document.getElementById("game-screen")
-            .classList.add("hidden");
+        $("game-screen").classList.add("hidden");
+        $("result-screen").classList.remove("hidden");
 
-        document.getElementById("result-screen")
-            .classList.remove("hidden");
+        scene.classList.add("landing");
+        $("moon").classList.add("arrived");
 
-        progressBar.style.width = "100%";
+        $("final-score").textContent =
+            "You earned 100 points and all 10 stars!";
 
-        missionElement.textContent = "All Missions Complete";
-
-        document.getElementById("final-score").textContent =
-            "Your final score: " + score + " / 100";
-
-        const resultTitle = document.getElementById("result-title");
-        const resultIcon = document.getElementById("result-icon");
-        const finalMessage = document.getElementById("final-message");
-
-        if (score === 100) {
-            resultTitle.textContent = "Moon Landing Successful!";
-            resultIcon.textContent = "🏆🌕🚀";
-            finalMessage.textContent =
-                "Amazing! You answered every question correctly " +
-                "and reached the Moon. You are a Math Commander!";
-        } else if (score >= 70) {
-            resultTitle.textContent = "Great Space Journey!";
-            resultIcon.textContent = "🌟🚀";
-            finalMessage.textContent =
-                "Great job, Space Explorer! You traveled " +
-                score + "% of the way to the Moon. " +
-                "Try again to complete your landing!";
-        } else {
-            resultTitle.textContent = "Keep Exploring!";
-            resultIcon.textContent = "🚀";
-            finalMessage.textContent =
-                "You traveled " + score +
-                "% of the way to the Moon. " +
-                "Keep practicing to power up your rocket!";
-        }
+        $("final-message").textContent =
+            "Mission accomplished! You reached the Moon " +
+            "after answering " + attempts + " questions. " +
+            "Great work, Space Explorer!";
     }
 
-    nextButton.addEventListener("click", function () {
-        currentQuestion++;
-
-        if (currentQuestion >= totalQuestions) {
+    $("next-button").addEventListener("click", () => {
+        if (correctCount >= goal) {
             finishGame();
         } else {
             createQuestion();
         }
     });
 
-    restartButton.addEventListener("click", function () {
-        currentQuestion = 0;
-        score = 0;
+    $("restart-button").addEventListener("click", () => {
+        correctCount = 0;
+        attempts = 0;
         answered = false;
 
-        document.getElementById("game-screen")
-            .classList.remove("hidden");
-
-        document.getElementById("result-screen")
-            .classList.add("hidden");
-
+        scene.classList.remove("landing");
+        $("moon").classList.remove("arrived");
         rocket.classList.remove("boost");
-        updateJourney();
+
+        $("game-screen").classList.remove("hidden");
+        $("result-screen").classList.add("hidden");
+
+        scene.querySelectorAll(".particle").forEach(p => p.remove());
+
+        updateJourney(false);
         createQuestion();
     });
 
-    updateJourney();
+    updateJourney(false);
     createQuestion();
 });
 </script>
-
 </body>
 </html>
