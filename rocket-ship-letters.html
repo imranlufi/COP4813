@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rocket Ship Letters!</title>
+<style>
+:root{color-scheme:dark}*{box-sizing:border-box}body{margin:0;background:#070d29;color:white;font-family:system-ui,Arial,sans-serif;text-align:center}main{max-width:1050px;margin:auto;padding:12px}h1{margin:8px 0;font-size:clamp(1.6rem,5vw,2.5rem)}p{margin:7px 0}.hud{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;font-size:1.1rem;margin:9px}.hud strong{color:#ffe47c}.frame{position:relative;border:3px solid #687ce2;border-radius:20px;overflow:hidden;background:#060d28}canvas{display:block;width:100%;height:auto;touch-action:none}.controls{display:flex;justify-content:center;gap:20px;margin:12px}button{font:inherit;font-weight:800;color:#0c1741;background:#ffdf69;border:0;border-radius:15px;padding:12px 24px;cursor:pointer;min-width:90px}button:focus-visible{outline:4px solid white}button:active{transform:scale(.96)}#message{min-height:1.5em;font-weight:700;color:#ffe47c}.note{font-size:.9rem;color:#c8d6ff}.overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#07132cdd;padding:20px}.panel{background:#18295a;border:2px solid #92adff;border-radius:22px;padding:24px;max-width:440px}.panel h2{margin:0 0 10px}.hidden{display:none}@media(max-width:550px){.hud{font-size:.9rem;gap:9px}.panel{padding:15px}.controls button{padding:14px 22px}}
+</style>
+</head>
+<body><main>
+<h1>🚀 Rocket Ship Letters!</h1>
+<p>Fly through space and collect the matching letters!</p>
+<div class="hud"><span>Find: <strong id="target">A</strong></span><span>Stars: <strong id="score">0 / 10</strong></span><span>Level: <strong id="level">1</strong></span></div>
+<div class="frame"><canvas id="game" width="960" height="520" aria-label="Space letter-catching game. Use up and down arrow keys or touch buttons to steer the rocket."></canvas><div class="overlay" id="overlay"><div class="panel"><h2 id="overlayTitle">Ready for takeoff?</h2><p id="overlayText">Find the letter shown at the top! Use ↑ and ↓, the buttons, or drag your finger to steer. Collect 10 correct letters!</p><button id="start">Let's Fly! 🚀</button></div></div></div>
+<div class="controls"><button id="up" aria-label="Move rocket up">⬆ Up</button><button id="down" aria-label="Move rocket down">⬇ Down</button></div>
+<p id="message" aria-live="polite">Let's explore the alphabet!</p><p class="note">Tip: You can also use W and S on a keyboard. Wrong letters won't end your mission.</p>
+</main>
+<script>
+(()=>{'use strict';
+const canvas=document.getElementById('game'),ctx=canvas.getContext('2d'),W=canvas.width,H=canvas.height;
+const targetEl=document.getElementById('target'),scoreEl=document.getElementById('score'),levelEl=document.getElementById('level'),message=document.getElementById('message');
+const overlay=document.getElementById('overlay'),overlayTitle=document.getElementById('overlayTitle'),overlayText=document.getElementById('overlayText'),start=document.getElementById('start');
+const letters='ABCDEFGHIJKLMNOPQRSTUVWXYZ';let running=false,score=0,level=1,target='A',rocketY=H/2,items=[],time=0,spawn=0,last=0,keys={up:false,down:false},pointerY=null,flash=0;
+const rand=(a,b)=>a+Math.random()*(b-a),pick=arr=>arr[Math.floor(Math.random()*arr.length)];
+const stars=Array.from({length:115},()=>({x:rand(0,W),y:rand(0,H),r:rand(.6,2),speed:rand(10,65),phase:rand(0,7)}));
+const planets=[{x:820,y:110,r:57,color:'#a07ce6',ring:true,speed:8},{x:380,y:430,r:39,color:'#51c7d3',speed:13},{x:1100,y:350,r:31,color:'#ee8477',speed:17}];
+function newTarget(){target=pick(letters.split(''));targetEl.textContent=target;}
+function reset(){score=0;level=1;rocketY=H/2;items=[];time=0;spawn=.7;flash=0;scoreEl.textContent='0 / 10';levelEl.textContent='1';newTarget();message.textContent='Catch the letter '+target+'!';running=true;overlay.classList.add('hidden');}
+function addLetter(){let correct=Math.random()<.53;let char=correct?target:pick(letters.split('').filter(c=>c!==target));items.push({x:W+35,y:rand(72,H-60),char,r:27,speed:rand(125,175)+level*12,wobble:rand(0,7),used:false});}
+function drawBody(x,y,r,color){ctx.save();ctx.translate(x,y);ctx.fillStyle=color;ctx.beginPath();ctx.arc(0,0,r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=.22;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(-r*.3,-r*.35,r*.38,0,Math.PI*2);ctx.fill();ctx.restore();}
+function drawScene(dt){ctx.fillStyle='#060d29';ctx.fillRect(0,0,W,H);for(const s of stars){s.x-=s.speed*dt*(running?1:.3);if(s.x<0)s.x=W;ctx.globalAlpha=.45+.5*Math.sin(time*2+s.phase)**2;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,7);ctx.fill();}ctx.globalAlpha=1;
+// Sun, Moon and planets drift through the sky.
+const sunX=760+Math.sin(time*.15)*120,sunY=90+Math.sin(time*.3)*30;ctx.save();ctx.shadowColor='#ffbd37';ctx.shadowBlur=36;drawBody(sunX,sunY,43,'#ffce4c');ctx.restore();
+const moonX=580+Math.sin(time*.23)*140,moonY=420+Math.cos(time*.3)*35;drawBody(moonX,moonY,35,'#c8d5eb');ctx.fillStyle='#9baecb';for(const [dx,dy,r] of [[-10,-8,7],[12,9,5],[-4,16,4]]){ctx.beginPath();ctx.arc(moonX+dx,moonY+dy,r,0,7);ctx.fill();}
+for(const p of planets){p.x-=p.speed*dt;if(p.x<-p.r*3)p.x=W+p.r*3;drawBody(p.x,p.y+Math.sin(time*.5+p.r)*13,p.r,p.color);if(p.ring){ctx.save();ctx.translate(p.x,p.y+Math.sin(time*.5+p.r)*13);ctx.strokeStyle='#e6c6ff';ctx.lineWidth=8;ctx.beginPath();ctx.ellipse(0,0,p.r*1.5,p.r*.38,-.25,0,7);ctx.stroke();ctx.restore();}}
+}
+function drawRocket(){ctx.save();ctx.translate(155,rocketY);ctx.shadowColor='#8ed8ff';ctx.shadowBlur=12;ctx.fillStyle='#ffad35';ctx.beginPath();ctx.moveTo(-44,0);ctx.lineTo(-77+Math.sin(time*24)*8,-14);ctx.lineTo(-69,0);ctx.lineTo(-77+Math.sin(time*24)*8,14);ctx.closePath();ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#ed5a66';ctx.beginPath();ctx.moveTo(-28,-18);ctx.lineTo(-51,-35);ctx.lineTo(-40,-5);ctx.lineTo(-28,17);ctx.lineTo(-51,35);ctx.lineTo(-28,18);ctx.fill();ctx.fillStyle='#e9f1ff';ctx.beginPath();ctx.moveTo(-44,-18);ctx.quadraticCurveTo(0,-28,48,0);ctx.quadraticCurveTo(0,28,-44,18);ctx.closePath();ctx.fill();ctx.fillStyle='#ef5a63';ctx.beginPath();ctx.moveTo(22,-15);ctx.quadraticCurveTo(39,-9,48,0);ctx.quadraticCurveTo(39,9,22,15);ctx.closePath();ctx.fill();ctx.fillStyle='#4ba9e9';ctx.beginPath();ctx.arc(-1,0,13,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=3;ctx.stroke();ctx.restore();}
+function drawLetters(){ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 31px system-ui';for(const it of items){ctx.save();ctx.translate(it.x,it.y+Math.sin(time*3+it.wobble)*5);ctx.shadowColor='#ffe277';ctx.shadowBlur=14;ctx.fillStyle=it.char===target?'#ffdb68':'#b1a5f5';ctx.beginPath();ctx.arc(0,0,it.r,0,7);ctx.fill();ctx.shadowBlur=0;ctx.fillStyle='#17204e';ctx.fillText(it.char,0,1);ctx.restore();}}
+function update(dt){time+=dt;if(keys.up)rocketY-=310*dt;if(keys.down)rocketY+=310*dt;if(pointerY!==null)rocketY+=(pointerY-rocketY)*Math.min(1,dt*9);rocketY=Math.max(46,Math.min(H-46,rocketY));if(!running)return;spawn-=dt;if(spawn<=0){addLetter();spawn=rand(.8,1.3)/Math.min(1.7,1+level*.08);}for(const it of items){it.x-=it.speed*dt;if(!it.used&&Math.abs(it.x-155)<48&&Math.abs(it.y+Math.sin(time*3+it.wobble)*5-rocketY)<47){it.used=true;if(it.char===target){score++;scoreEl.textContent=score+' / 10';message.textContent='Amazing! You caught '+target+'! ⭐';flash=.25;if(score>=10){running=false;overlayTitle.textContent='Mission Complete! 🌟';overlayText.textContent='You collected 10 matching letters and explored the whole galaxy!';start.textContent='Play Again 🚀';overlay.classList.remove('hidden');}else{level=1+Math.floor(score/3);levelEl.textContent=level;newTarget();message.textContent='Great job! Now find '+target+'!';items=[];break;}}else{message.textContent='Oops! That was '+it.char+'. Find '+target+'!';}}}items=items.filter(it=>!it.used&&it.x>-45);flash=Math.max(0,flash-dt);}
+function frame(ms){const dt=Math.min(.035,(ms-last)/1000||0);last=ms;update(dt);drawScene(dt);drawLetters();drawRocket();if(flash){ctx.fillStyle='rgba(255,235,120,'+(flash*.4)+')';ctx.fillRect(0,0,W,H);}requestAnimationFrame(frame);}requestAnimationFrame(frame);
+start.addEventListener('click',reset);
+window.addEventListener('keydown',e=>{if(['ArrowUp','ArrowDown','w','W','s','S'].includes(e.key)){e.preventDefault();if(e.key==='ArrowUp'||e.key.toLowerCase()==='w')keys.up=true;else keys.down=true;}});
+window.addEventListener('keyup',e=>{if(e.key==='ArrowUp'||e.key.toLowerCase()==='w')keys.up=false;if(e.key==='ArrowDown'||e.key.toLowerCase()==='s')keys.down=false;});
+for(const [id,key] of [['up','up'],['down','down']]){const b=document.getElementById(id);b.addEventListener('pointerdown',e=>{e.preventDefault();keys[key]=true;b.setPointerCapture(e.pointerId)});for(const ev of ['pointerup','pointercancel','lostpointercapture'])b.addEventListener(ev,()=>keys[key]=false);}
+function point(e){const rect=canvas.getBoundingClientRect();pointerY=(e.clientY-rect.top)*H/rect.height;}canvas.addEventListener('pointerdown',e=>{point(e);canvas.setPointerCapture(e.pointerId)});canvas.addEventListener('pointermove',e=>{if(e.buttons||e.pointerType==='touch')point(e)});for(const ev of ['pointerup','pointercancel'])canvas.addEventListener(ev,()=>pointerY=null);
+})();
+</script></body></html>
