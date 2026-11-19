@@ -1,1 +1,39 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Anisah's Kitchen</title><link rel="stylesheet" href="style.css"></head><body><main><header><div><h1>🍳 Anisah's Kitchen</h1><p>Cook fast. Serve happy customers!</p></div><button id="pause">Pause ⏸</button></header><section class="hud"><span id="score">⭐ Score: 0</span><span id="level">🏆 Level: 1</span><span id="time">⏱ 120s</span><span id="held">👐 Holding: Nothing</span></section><div class="game"><canvas id="game" width="800" height="560" aria-label="Top-down cooking game"></canvas><aside><h2>📋 Orders</h2><div id="orders"></div><h3>How to play</h3><p>Move: WASD / Arrow keys<br>Interact: E or Space<br>Pause: Enter<br>Restart after game over: R</p><p>Collect a bun, chop a tomato or lettuce, and cook a patty. Assemble at the plate station and serve at the window!</p><p id="message" aria-live="polite">Welcome to Anisah's Kitchen!</p></aside></div><footer>Made for Anisah ❤️</footer></main><script src="game.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anisah’s Kitchen</title>
+  <link rel="stylesheet" href="style.css?v=2">
+  <script src="game.js?v=2" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div>
+        <h1>🍳 Anisah's Kitchen</h1>
+        <p>Cook fast. Serve happy customers!</p>
+      </div>
+      <button id="pause" type="button">Pause ⏸</button>
+    </header>
+    <section class="hud" aria-label="Game status">
+      <span id="score">⭐ Score: 0</span>
+      <span id="level">🏆 Level: 1</span>
+      <span id="time">⏱ 120s</span>
+      <span id="held">👐 Holding: Nothing</span>
+    </section>
+    <div class="game">
+      <canvas id="game" width="800" height="560" aria-label="Anisah's Kitchen game area">Your browser needs canvas support to play.</canvas>
+      <aside>
+        <h2>📋 Orders</h2>
+        <div id="orders"></div>
+        <h3>How to play</h3>
+        <p>Move: WASD / Arrow keys<br>Interact: E or Space<br>Pause: Enter<br>Restart after game over: R</p>
+        <p>Collect a bun, chop a tomato or lettuce, and cook a patty. Assemble at the plate station and serve at the window!</p>
+        <p id="message" aria-live="polite">Welcome to Anisah's Kitchen!</p>
+      </aside>
+    </div>
+    <footer>Made for Anisah ❤️</footer>
+  </main>
+</body>
+</html>
